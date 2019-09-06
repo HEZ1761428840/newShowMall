@@ -13,6 +13,12 @@ public class IndexAction_back {
 
 	@Resource ProductBiz_back pb;
 	
+	@GetMapping("goodsAdd")
+	public String goodsAdd(Model model) {
+		model.addAttribute("pbList", pb.queryProductBrand());
+		return "backManage/goods_add";
+	}
+	
 	/**
 	 * 订单管理界面
 	 * @return

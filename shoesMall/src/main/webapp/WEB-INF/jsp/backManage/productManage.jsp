@@ -74,6 +74,12 @@
 	<!-- 修改商品的弹出框 -->
 	<div id = "editProcut" style="display: none">
 		<form class="layui-form layui-form-pane" lay-filter="updateFrom">
+			<div class="layui-form-item" style="display: none">
+				<label class="layui-form-label">商品Id</label>
+				<div class="layui-input-block">
+					<input type="text" name="id" class="layui-input">
+				</div>
+			</div>
 			<div class="layui-form-item">
 				<label class="layui-form-label">商品名称</label>
 				<div class="layui-input-block">
@@ -93,7 +99,7 @@
 					<input type="text" name="color" class="layui-input">
 				</div>
 			</div>
-			
+			 
 			<div class="layui-form-item">
 				<label class="layui-form-label">商品库存</label>
 				<div class="layui-input-block">
@@ -116,10 +122,7 @@
 			<div class="layui-form-item">
 				<label class="layui-form-label">商品图片</label>
 				<div class="layui-upload-drag" id="goodsPic">
-				  <i class="layui-icon"></i>
-				  <p id="picture">
-				  	
-				  </p>
+				  	<p id="picture" style="float: left;"></p>
 				</div>
 			</div>
 			
@@ -129,8 +132,8 @@
 					<textarea class="layui-textarea" name = "descs" id = "descs"></textarea>
 				</div>
 			</div>
-			<div class="layui-form-item">
-				<a class="layui-btn"  lay-filter="productUpdateTabel">跳转式提交</a>
+			<div class="layui-form-item" style="margin-left: 350px;">
+				<a class="layui-btn" lay-submit="" lay-filter="productUpdateTabel">修改</a>
 			</div>
 		</form>
 	</div>
@@ -210,7 +213,7 @@
  		    } else if(obj.event === 'edit'){
  		    	layer.open({
 	        		//layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
-		            type:1,
+		            type: 1,
 		            title:"修改商品",
 		            area: ['70%','100%'],
 		            content: $("#editProcut").html(),
@@ -222,15 +225,52 @@
 		            		pid = 0;
 		            	}
 		            	$("#pbName option[value='"+pid+"']").prop("selected", true);
-		            	
-		            	var pic = "<img  src="+data.name+">";
-		            	$('#picture').html();
-		                form.render('select'); //这个很重要
+		            	//显示图片
+		            	var pic = '<img  src="img/'+data.images[0].imagePath+'">';
+		            	$('#editProcut #goodsPic #picture').html(pic);
+		                form.render('select'); //熏染
 		            }
 		           
  		    	});
  		    }
  		  });
+ 		
+ 		//监听修改商品
+ 		form.on('submit(productUpdateTabel)',function(data){
+ 			var formData = data.field;
+ 			//id name price color stock productBrand descs
+ 			var id = formData.id;
+ 			var name = formData.name;
+ 			var price = formData.price;
+ 			var color = formData.color;
+ 			var stock = formData.stock;
+ 			var pbid = formData.productBrand;
+ 			var descs = formData.descs;
+ 			$.ajax({
+ 				type: "POST",
+ 				url: "updateProduct",
+ 				data: { id: id
+ 					, name: name
+ 					, price: price
+ 					, color: color
+ 					, stock: stock
+ 					, pbid: pbid
+ 					, descs: descs
+ 				},
+ 				success: function (data) {
+ 					if(data.code == 1){
+ 			    		tableIns.reload();
+ 			    		layer.msg('修改成功');
+ 			    	}else if(data.code == 0){
+ 			    		layer.msg('修改失败');
+ 			    	}
+ 				}
+ 			});
+			
+ 			layer.close(layer.index); 
+ 			
+ 		});
+ 		
 			
 	});
 		
