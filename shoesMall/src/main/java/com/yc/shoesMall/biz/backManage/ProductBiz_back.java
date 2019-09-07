@@ -62,18 +62,15 @@ public class ProductBiz_back {
 			if(Lstock > 0) {
 				ps.setCount(Lstock);
 				ps.setSize("L");
-				System.out.println("LLLLLLLLLLLLLLLLLL");
 				psm.insert(ps);
 			}
 			if(Mstock > 0) {
 				ps.setCount(Mstock);
 				ps.setSize("M");
-				System.out.println("MMMMMMMMMMMMMMMMMM");
 				psm.insert(ps);
 			}
 			if(Sstock > 0) {
 				ps.setCount(Sstock);
-				System.out.println("SSSSSSSSSSSSSSSSSSS");
 				ps.setSize("S");
 				psm.insert(ps);
 			}

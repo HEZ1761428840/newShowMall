@@ -12,6 +12,12 @@
     <result column="pid" jdbcType="INTEGER" property="pid" />
     <result column="number" jdbcType="INTEGER" property="number" />
     <result column="price" jdbcType="DECIMAL" property="price" />
+    
+    <!-- 一对一关联查询  订单表 关联 地址表 -->
+    <association property="product" column="pid" 
+    	select="com.yc.shoesMall.dao.ProductMapper.selectByPrimaryKey">
+    </association>
+    
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
