@@ -15,7 +15,10 @@ public class Product {
      * @mbg.generated Mon Aug 26 14:20:54 CST 2019
      */
     private Integer id;
-
+    
+    /**
+     * 商品尺寸
+     */
     List<ProductSize> productSizes;
     
     public List<ProductSize> getProductSizes() {
@@ -25,7 +28,9 @@ public class Product {
 	public void setProductSizes(List<ProductSize> productSizes) {
 		this.productSizes = productSizes;
 	}
-
+	/**
+	 * 商品图片，一对多查询
+	 */
 	List<Image> images;
     
     public List<Image> getImages() {
@@ -37,7 +42,7 @@ public class Product {
 	}
 	
 	/**
-	 * 商品品牌
+	 * 商品品牌 一对一查询
 	 */
 	private ProductBrand productBrand;
 	

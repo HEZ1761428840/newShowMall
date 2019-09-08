@@ -1,12 +1,15 @@
 
 package com.yc.shoesMall.bean;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(value = { "handler" })
 public class OrderDetail {
 	
+	/**
+	 * 一对一 关联 商品表
+	 */
 	private Product product;
-	
 	
     public Product getProduct() {
 		return product;
@@ -15,7 +18,6 @@ public class OrderDetail {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
-	
 
 	/**
      *

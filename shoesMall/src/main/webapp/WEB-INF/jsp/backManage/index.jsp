@@ -61,14 +61,14 @@
 		        	<li>
 		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-liuliangyunpingtaitubiao03 left"></i>订单管理<i class="iconfont icon-dajiantouyou right"></i></a>
 		                <dl>
-		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('../../../../../../backManage/tgls/base/pages.html',this)">订单查询</a></dt>
+		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('orderManage',this)">订单查询</a></dt>
 		                </dl>
 		            </li>
 		        	<li>
 		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-shangpin left"></i>商品管理<i class="iconfont icon-dajiantouyou right"></i></a>
 		                <dl>
 		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('productManage',this)">基本商品库</a></dt>
-		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('../../../../../../backManage/tgls/goodsManage/goods_add.html',this)">添加商品</a></dt>
+		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('goodsAdd',this)">添加商品</a></dt>
 		                </dl>
 		            </li>
 		        	<li>
