@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.yc.shoesMall.bean.Orders;
 import com.yc.shoesMall.bean.OrderDetail;
 import com.yc.shoesMall.bean.OrderDetailExample;
-import com.yc.shoesMall.bean.Orders;
 import com.yc.shoesMall.bean.OrdersExample;
 import com.yc.shoesMall.dao.OrderDetailMapper;
 import com.yc.shoesMall.dao.OrdersMapper;
@@ -22,6 +22,7 @@ public class OrderBiz_back {
 
 	@Resource
 	private OrdersMapper om;
+
 	
 	@Resource
 	private OrderDetailMapper odm;

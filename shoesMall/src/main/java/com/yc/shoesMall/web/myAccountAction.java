@@ -2,6 +2,8 @@ package com.yc.shoesMall.web;
 
 
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,9 +17,11 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.yc.shoesMall.bean.Address;
+import com.yc.shoesMall.bean.OrdersExample;
 import com.yc.shoesMall.bean.User;
 import com.yc.shoesMall.biz.AddressBiz;
-import com.yc.shoesMall.biz.MyorderBiz;
+import com.yc.shoesMall.biz.CartBiz;
+import com.yc.shoesMall.biz.OrdersBiz;
 import com.yc.shoesMall.biz.UserBiz;
 
 
@@ -27,7 +31,10 @@ import com.yc.shoesMall.biz.UserBiz;
 public class myAccountAction {
 
 	@Resource
-	private MyorderBiz obiz;
+	private OrdersBiz ordersBiz;
+	
+	@Resource
+	private CartBiz cartBiz;
 	
 	@Resource
 	private UserBiz ubiz;
@@ -46,12 +53,9 @@ public class myAccountAction {
 	@RequestMapping("my-account")
 	public String myaccount(@SessionAttribute(name = "loginUser", required = false) User user,Model model) {
 		
-		//判断是否登录存在用户
-		if(user!=null){
-			int id=ubiz.queryId(user);
-	        model.addAttribute("orderLists", obiz.queryMyOrder(id));
-	        model.addAttribute("account_details", obiz.queryAddress(id));	
-		}
+			List<User> list=ubiz.queryId(user);
+	        model.addAttribute("orderLists", ordersBiz.selectOrders(user));
+	        model.addAttribute("account_details", cartBiz.queryAddress(list.get(0).getId()));	
 		
        
 		return "my-account";
@@ -89,8 +93,8 @@ public class myAccountAction {
 		
 		//修改地址
 		if(!"".equals(address)){
-			int id=ubiz.queryId(user);
-              Address a= abiz.queryAddress(id);
+			List<User> list =ubiz.queryId(user);
+              Address a= abiz.queryAddress(list.get(0).getId());
 			  a.setAddress(address);
 			abiz.update(a);
 			

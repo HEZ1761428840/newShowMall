@@ -59,20 +59,21 @@
                         <!-- Register Content Start -->
                         <div class="col-lg-6" moth=post>
                             <div class="login-reg-form-wrap sign-up-form">
-                                <h4>Singup Form</h4>
+                                <h4>注册</h4>
                                 	<form action="register" name="myForm" onsubmit="return validate_form(this);"
                                 	method="post" enctype="multipart/form-data">
                                     <div class="single-input-item">
-                                        <input type="text" placeholder="Full Name"  name ="name" required />
+                                       	名字：  <input type="text" placeholder="Full Name"  name ="name" required />
+                                    </div>
+                                    
+                                    <div class="single-input-item">
+     									头像：   <input type="file" name="head_pictrue" required>
                                     </div>
                                     <div class="single-input-item">
-     								   <input type="file" name="head_pictrue" required>
+                                        	邮箱： <input type="email" placeholder="Enter your Email"  name="email" required />
                                     </div>
                                     <div class="single-input-item">
-                                        <input type="email" placeholder="Enter your Email"  name="email" required />
-                                    </div>
-                                    <div class="single-input-item">
-                                        <input type="text" placeholder="Enter your phone"  name="phone" required />
+                                        	电话号码： <input type="text" placeholder="Enter your phone"  name="phone" required />
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-6">
@@ -86,19 +87,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                   
                                     <div class="single-input-item">
-                                        <div class="login-reg-form-meta">
-                                            <div class="remember-meta">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="subnewsletter">
-                                                    <label class="custom-control-label" for="subnewsletter">Subscribe
-                                                        Our Newsletter</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="single-input-item">
-                                        <button type="submit" class="btn btn-sqr">Register</button>
+                                        <button type="submit" class="btn btn-sqr">注册</button>
                                     </div>
                                     </form>
                             </div>

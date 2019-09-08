@@ -10,9 +10,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.yc.shoesMall.web.LoginInterceptor;
 
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @Controller
+@EnableTransactionManagement
 @MapperScan("com.yc")
 public class ShoesMallApplication implements WebMvcConfigurer{
 

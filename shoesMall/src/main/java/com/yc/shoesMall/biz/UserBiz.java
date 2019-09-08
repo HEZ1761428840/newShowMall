@@ -38,9 +38,10 @@ public class UserBiz {
 		 * @param user
 		 * @return
 		 */
-		public int queryId(User user) {
-			
-			return um.selectIdByName(user);
+		public List<User> queryId(User user) {
+			UserExample example = new UserExample();
+			example.createCriteria().andNameEqualTo(user.getName());
+			return um.selectByExample(example);
 		}
 		
 		

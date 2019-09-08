@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
  <!-- JS
 ============================================ -->
-
+	
     <!-- Modernizer JS -->
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <!-- jQuery JS -->
@@ -35,3 +35,4 @@
     <script src="assets/js/plugins/google-map.js"></script>
     <!-- Main JS -->
     <script src="assets/js/main.js"></script>
+    <script src="js/toastr.js"></script>

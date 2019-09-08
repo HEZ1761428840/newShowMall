@@ -95,8 +95,6 @@ public interface AddressMapper {
      */
     int updateByPrimaryKey(Address record);
 
-	List<Address> selectAll(int id);
-
 	Address selectAddress(int id);
 
 	
