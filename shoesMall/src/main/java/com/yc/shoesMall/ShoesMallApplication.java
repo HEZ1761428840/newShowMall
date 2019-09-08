@@ -1,15 +1,14 @@
 package com.yc.shoesMall;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @Controller
+@EnableTransactionManagement
 @MapperScan("com.yc")
 public class ShoesMallApplication {
 

@@ -12,6 +12,10 @@
     <result column="pid" jdbcType="INTEGER" property="pid" />
     <result column="number" jdbcType="INTEGER" property="number" />
     <result column="price" jdbcType="DECIMAL" property="price" />
+    
+     <association property="product" column="pid" fetchType="lazy"
+    	select="com.yc.shoesMall.dao.ProductMapper.selectByPrimaryKey">
+    </association>
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--

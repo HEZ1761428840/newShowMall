@@ -30,7 +30,7 @@
     <link rel="stylesheet" href="assets/css/plugins/jqueryui.min.css">
     <!-- main style css -->
     <link rel="stylesheet" href="assets/css/style.css">
-
+	<link href="assets/css/toastr.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -78,26 +78,17 @@
                                     <div class="single-input-item">
                                     <label for="loginModalUserPwd">验证码</label>
 									  <div class="form-group">
-									   <input class="form-control" type="tel" id="verify_input" placeholder="请输入验证码" maxlength="4">
+									   <input class="form-control" type="tel" id="inputCode" placeholder="请输入验证码" maxlength="4">
 									  </div>
 									 </div>
 									 <div class="single-input-item">
-									  <a href="javascript:void(0);" rel="external nofollow" title="点击更换验证码">
-									   <img id="imgVerify" src="" alt="更换验证码" height="36" width="100%" onclick="getVerify(this);">
-									  </a>
+									 <div id="checkCode" class="code"  onclick="createCode(4)" style="width: 60px;float: left;margin-left: 15px;background-color:white;"></div>
+           							<div onclick="createCode(4)" style="width: 60px;float: left;margin-left: 15px;">换一张</div>
+									
 									 </div>
-                                    
-                                    
-                                    <div class="single-input-item">
-                                        <div class="login-reg-form-meta d-flex align-items-center justify-content-between">
-                                            <div class="remember-meta">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="rememberMe">
-                                                    <label class="custom-control-label" for="rememberMe">Remember Me</label>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="forget-pwd">忘记密码?</a>
-                                        </div>
+									 
+                                          <a href="#" class="forget-pwd" style="margin-left:100px">忘记密码?</a>
+                                       
                                     </div>
                                     <div class="single-input-item">
                                         <button  onclick="login()" class="btn btn-sqr">登录</button>
@@ -114,34 +105,107 @@
     </main>
     
 <script type="text/javascript">
-		//获取验证码
-		function getVerify(obj){
-		 obj.src = url+ "getVerify?"+Math.random();
-		}
     
 	function login() {
+		
+			
 
 		// ajax 登录
 		var url = "login";
 		var name = loginModalUserNmae.value;
 		var pwd = loginModalUserPwd.value;
+		if(name==''){
+			toastr.options = {
+		              "positionClass": "toast-top-center",//弹出窗的位置
+		          };
+			toastr.warning('请输入用户名');
+			 return;
+		}else if(pwd == ''){
+			toastr.options = {
+		              "positionClass": "toast-top-center",//弹出窗的位置
+		          };
+			toastr.warning('请输入密码');
+			 return;
+		}
+		
 		var param = {
 			name : name,
 			password : pwd
 		};
 		//匿名函数
-		
+		if(validateCode()==false){
+			 return;
+		 }	
 		$.post(url, param, function(result) {
 			console.log(result);
 			if (result.code == 1) {
 				alert("登录成功");
 				window.location.href="index";
 			} else {
+				createCode(4);
 				alert("账号或者密码错误，请重新登录");
 			}
 		}); 
 		
 	}
+	
+	window.onload=function(){
+	     createCode(4);    
+	    }
+
+	//生成验证码的方法
+   function createCode(length) {
+       var code = "";
+       var codeLength = parseInt(length); //验证码的长度
+       var checkCode = document.getElementById("checkCode");
+       ////所有候选组成验证码的字符，当然也可以用中文的
+       var codeChars = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+       'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
+       'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'); 
+       //循环组成验证码的字符串
+       for (var i = 0; i < codeLength; i++)
+       {
+           //获取随机验证码下标
+           var charNum = Math.floor(Math.random() * 62);
+           //组合成指定字符验证码
+           code += codeChars[charNum];
+       }
+       if (checkCode)
+       {
+           //为验证码区域添加样式名
+           checkCode.className = "code";
+           //将生成验证码赋值到显示区
+           checkCode.innerHTML = code;
+       }
+   }
+ //检查验证码是否正确
+   function validateCode()
+   {
+       //获取显示区生成的验证码
+       var checkCode = document.getElementById("checkCode").innerHTML;
+       //获取输入的验证码
+       var inputCode = document.getElementById("inputCode").value;
+       console.log(checkCode);
+       console.log(inputCode);
+       if (inputCode.length <= 0)
+       {
+       	toastr.options = {
+		              "positionClass": "toast-top-center",//弹出窗的位置
+		          };
+			toastr.warning('请输入验证码');
+			return false;
+       }
+       else if (inputCode.toUpperCase() != checkCode.toUpperCase())
+       {
+       	toastr.options = {
+		              "positionClass": "toast-top-center",//弹出窗的位置
+		          };
+			toastr.warning('验证码有误');
+			$('#inputCode').val("");
+           createCode(4);
+           return false;
+       }    
+   }  
 </script>
 
     <!-- Scroll to top start -->

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>ShoesMall购物支付</title>
+<title>支付宝电脑网站支付</title>
 <style>
 * {
 	margin: 0;
@@ -193,7 +193,7 @@ h2 {
 </head>
 <body text=#000000 bgColor="#ffffff" leftMargin=0 topMargin=4>
 	<header class="am-header">
-	<h1>ShoesMall购物支付平台</h1>
+	<h1>支付宝电脑网站支付体验入口页</h1>
 	</header>
 	<div id="main">
 		<div id="tabhead" class="tab-head">
@@ -219,9 +219,10 @@ h2 {
 					<hr class="one_line">
 					<dt>付款金额 ：</dt>
 					<dd>
-						<input id="WIDtotal_amount" name="WIDtotal_amount" />
+						<input id="WIDtotal_amount" name="WIDtotal_amount" value="<%=request.getParameter("pay") %>"/>
 					</dd>
-					
+					<hr class="one_line">
+					<dt>商品描述：</dt>
 					<dd>
 						<input id="WIDbody" name="WIDbody" />
 					</dd>
@@ -360,14 +361,9 @@ h2 {
 		</div>
 	</div>
 </body>
-
-
-
 <script language="javascript">
 	var tabs = document.getElementsByName('tab');
 	var contents = document.getElementsByName('divcontent');
-	
-	var table = document.getElementById("table1"); 
 	
 	(function changeTab(tab) {
 	    for(var i = 0, len = tabs.length; i < len; i++) {
@@ -399,7 +395,7 @@ h2 {
 		sNow += String(vNow.getMilliseconds());
 		document.getElementById("WIDout_trade_no").value =  sNow;
 		document.getElementById("WIDsubject").value = "测试";
-		document.getElementById("WIDtotal_amount").value = price;
+		document.getElementById("WIDtotal_amount").value ;
 	}
 	GetDateNow();
 </script>

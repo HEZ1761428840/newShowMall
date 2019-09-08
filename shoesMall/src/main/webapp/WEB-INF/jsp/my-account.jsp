@@ -142,14 +142,14 @@
                                                             <tbody>
                                                             	<c:forEach items="${orderLists }" var="order">
                                                                 <tr>
-                                                                    <td>${order.id}</td>
+                                                                    <td>${order.orderNum}</td>
                                                                     <td>
                                                                      <fmt:formatDate value="${order.createTime}" pattern="yyyy-MM-dd"/>
                                                                     <%-- ${order.createTime} --%>
                                                                     
                                                                     
                                                                     </td>
-                                                                    <td>${order.status}</td>
+                                                                    <td>${order.status == 1? "未支付" : (order.status == 4 ? '正在派送' : "")}</td>
                                                                     <td id="e">${order.countPrice}</td>
                                                                     <td><a href="cart.html" class="btn btn-sqr">查看</a>
                                                                     </td>

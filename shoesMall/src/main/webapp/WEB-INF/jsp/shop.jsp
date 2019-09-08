@@ -32,6 +32,8 @@
     <link rel="stylesheet" href="assets/css/plugins/jqueryui.min.css">
     <!-- main style css -->
     <link rel="stylesheet" href="assets/css/style.css">
+    
+    <link href="assets/css/toastr.min.css" rel="stylesheet">
 	<style type="text/css">
 
 	</style>
@@ -220,8 +222,8 @@
                                             <div class="price-box">
                                                 <span class="price-regular">${p.price}</span>
                                             </div>
-                                            <p>${p.descs}
-                                            </p>
+                                            <p>${p.descs} </p>
+                                            <a href="toDetails?id=${p.id}" class="btn btn-large hover-color" >查看详情</a>
                                             <a href="" class="btn btn-large hover-color" data-toggle="modal" data-target="#quick_view${p.id}">直接够买</a>
                                             <a href="" class="btn btn-large hover-color" data-toggle="modal" data-target="#quick_view${p.id}">加入购物车</a>
                                         </div>
@@ -345,7 +347,10 @@
                                       
                                         <div class="action_link">
                                                 <a class="btn btn-cart2" href="#">直接购买</a>
-                                                 <a class="btn btn-cart2" href="javascript:toCart(${product.id})">加入购物车</a>
+                                            
+                                                 <a class="btn btn-cart2" href="javascript:toCart(${loginUser.id==null? 0 : loginUser.id},${product.id})">加入购物车</a>
+                                               
+                                                
                                          </div>
                                     </div>
                                 </div>
@@ -369,6 +374,7 @@
 	var productBrands = ""; 
 	var productSizes ="" ;
 	$(function(){
+		
 		$('.clicksize').click(function(){
 			if(true == $(this).prop('checked')){
 				productSizes += $(this).val()+",";
@@ -408,7 +414,7 @@
 		$.post("fuzzySelect",{maxPrice:maxPrice,minPrice:minPrice,productBrands:productBrands},function(data){
 			var str="";
 				if(data.code==1){
-					var size = data.count%6>0 ? data.count/6+1 :data.count/6;
+					var size = data.count%6>0 ? Math.floor(data.count/6)+1 :data.count/6;
 					$('#pageSizeSel').empty();
 					
 					 var  string = '<li><a class="previous" href="javascript:fenye('+1+')"><i class="fa fa-angle-left"></i></a></li>';
@@ -435,7 +441,10 @@
 					showComm(data);
 					
 				}else{
-					alert("未找到");
+					toastr.options = {
+				              "positionClass": "toast-top-center",//弹出窗的位置
+				          };
+					toastr.warning('未找到');
 				}
 			});
 	}
@@ -443,7 +452,7 @@
 	function fenye(page){
 		$.post("pageSelect",{maxPrice:maxPrice,minPrice:minPrice,productBrands:productBrands,page:page},function(data){
 			if(data.code==1){
-				var size = data.count%6>0 ? data.count/6+1 :data.count/6;
+				var size = data.count%6>0 ? Math.floor(data.count/6)+1 :data.count/6;
 				$('#pageSizeSel').empty();
 				 var  string = '<li><a class="previous" href="javascript:fenye('+i+')"><i class="fa fa-angle-left"></i></a></li>';
 				 if(size<=8){
@@ -490,7 +499,10 @@
 				showComm(data);	
 				models(data);
 			}else{
-				alert("未找到");
+				toastr.options = {
+			              "positionClass": "toast-top-center",//弹出窗的位置
+			          };
+				toastr.warning('未找到');
 			}
 		});
 	}
@@ -525,8 +537,11 @@
 	                +'<DIV class="ratings">'
 	               	+str
 	                +' </DIV><DIV class="price-box"><span class="price-regular">'+data.data[i].price+'</span></DIV>'
-	                +'<p>'+data.data[i].descs+'</p> <a class="btn btn-large hover-color" href="#">直接购买</a>'
-	                +'<a href="cart.html" class="btn btn-large hover-color">加入购物车</a>'
+	                +'<p>'+data.data[i].descs+'</p><a href="toDetails?id='+data.data[i].id+'" class="btn btn-large hover-color" >查看详情</a>'
+	                +'<a href="#" class="btn btn-large hover-color">直接够买</a>'
+	                +'<a href="#" class="btn btn-large hover-color" data-toggle="modal" data-target="#quick_view'+data.data[i].id+'">加入购物车</a>'
+	                
+                    
 	                +'</DIV></DIV></DIV>');
 		}
 	}
@@ -568,12 +583,12 @@
 		            +'<span> 200 in stock</span></div>'
 		            +'<p class="pro-desc">'+data.data[i].descs+'</p> <div class="quantity-cart-box d-flex align-items-center">'
 		            +'<h6 class="option-title">qty:</h6><div class="quantity">'
-		            +'<div class="pro-qty"><input type="text" value="1"></div></div></div>'
+		            +'<div class="pro-qty"><input type="text" value="1" id="count'+data.data[i].id+'"></div></div></div>'
 		            +'<div class="pro-size"><h6 class="option-title">size :</h6><select class="nice-select">'
 		            +productSizes
 		            +'</select> </div>'
 		            +'<div class="action_link"> <a class="btn btn-cart2" href="#">直接购买</a>'
-		            +'<a class="btn btn-cart2" href="#">加入购物车</a>'
+		            +'<a class="btn btn-cart2" href="javascript:toCart(${loginUser.id==null? 0 : loginUser.id},'+data.data[i].id+')">加入购物车</a>'
 		            +'</div></div> </div>  </div>  </div> </div></div></div></div>';	
 		            
 		       
@@ -585,29 +600,64 @@
 		var a = $('#image'+index1+''+index2).val();
 		$('#image'+id).attr('src','img/'+a);
 	}
-	function toCart(id){
+	function toCart(uid,productId){
+		if(uid==0){
+			tologin(productId);
+			return;
+		}
 		
-		var  size = $('#size'+id+' span').text();
-		var price = $('#price'+id).text()
-		var count = $('#count'+id).val();
-		var image = $('#image'+id).attr("src").substring(4);
-		price = parseInt(price.substring(1));
+		var  size = $('#size'+productId+' span').text();
+		var count = $('#count'+productId).val();
+		var image = $('#image'+productId).attr("src").substring(4);
 		count = parseInt(count);
-		var countPrice = price*count;
 		
-		$.post("toCart",{orderSize:size,orderImage:image},function(data){
-			
-		});
-		
-		
-		$("#quick_view"+id).removeClass("show");
-		$("#quick_view"+id).removeAttr("style");
+		$.post("addCart",{uid:uid, pid:productId,productCount:count,productImage:image,productSize:size},function(data){
+			 if(data.code==1){
+				 	$("#quick_view"+productId).removeClass("show");
+					$("#quick_view"+productId).removeAttr("style");
+					$("#bodys").removeClass();
+					$("#bodys").removeAttr("style");
+					$('.modal-backdrop').remove();	
+					 toastr.options = {
+				              "positionClass": "toast-top-center",//弹出窗的位置
+				          };
+					toastr.success('添加成功');
+					 $('#CartCount').text(data.data.length);
+					 $('#Cartlist').html('');
+					 for(var i = 0 ; i<data.data.length;i++){
+						 $('#Cartlist').append('<li id="Cart'+data.data[i].id+'">'
+	                             +'<div class="cart-img"><a href="#"><img src="img/'+data.data[i].productImage+'" alt=""></a>'
+	                         +'</div><div class="cart-info">'
+	                          +'<h6 class="product-name"><a href="#">'+data.data[i].product.name+'</a></h6>'
+	                          +'<span class="cart-qty">数量: '+data.data[i].productCount+'</span>'
+	                          +'<span class="item-price">$'+data.data[i].productCount*data.data[i].product.price+'</span>'
+	                         + '</div><div class="del-icon">' 
+	                         +'<i class="fa fa-times" onclick="delectCart('+data.data[i].id+')" ></i>'
+	                         +'</div></li>');
+					 }
+			 }else{
+				 toastr.options = {
+			              "positionClass": "toast-top-center",//弹出窗的位置
+			          };
+				toastr.warning('系统繁忙！ 请售后再试');
+			 }
+			 
+		});	
+	}
+	
+	function tologin(productId){
+		$("#quick_view"+productId).removeClass("show");
+		$("#quick_view"+productId).removeAttr("style");
 		$("#bodys").removeClass();
 		$("#bodys").removeAttr("style");
-		$('.modal-backdrop').remove();
-		
-		
+		$('.modal-backdrop').remove();	
+		toastr.options = {
+	              "positionClass": "toast-top-center",//弹出窗的位置
+	          };
+		toastr.warning('请先登陆！！！');
 	}
+	
+	
 	
 </script>
 </body>

@@ -98,7 +98,6 @@ public interface UserMapper {
      */
     int updateByPrimaryKey(User record);
 
-    int selectIdByName(User user);
 
 	List<User> queryUserByLike(User user);
 }

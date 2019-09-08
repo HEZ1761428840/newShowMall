@@ -10,30 +10,25 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.yc.shoesMall.bean.User;
-import com.yc.shoesMall.biz.MyorderBiz;
+import com.yc.shoesMall.biz.CartBiz;
 import com.yc.shoesMall.biz.UserBiz;
 
 @Controller
-@SessionAttributes("orders")
+@SessionAttributes({"orders","carts"})
 public class indexAction {
 	
 	@Resource
 	private UserBiz ubiz;
 	
 	@Resource
-	private MyorderBiz obiz;
+	private CartBiz cartBiz;
 	
 	
 	@RequestMapping("index")
 	public String index(
 			@SessionAttribute(name = "loginUser", required = false) User user, Model model) {
-		model.addAttribute("user", user);
 		if(user != null){
-			int id=ubiz.queryId(user);
-			 model.addAttribute("orders", obiz.queryMyOrder(id));
-			//model.addAttribute("orders", obiz.selectOrdersName(692));
-			 
-			 
+			 model.addAttribute("carts", cartBiz.queryMyCart(user.getId()));
 			 return "index";
 		}else{
 			return "index";

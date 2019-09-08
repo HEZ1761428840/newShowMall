@@ -17,13 +17,19 @@
      	 select="selectOrderById">
  
     </collection> -->
+     <!-- 一对一 用户 -->
+    <collection property="address" column="id" fetchType="lazy"
+    	select="selectAddress">
+    </collection>
    
   </resultMap>
  <!--  <select id="selectOrderById"
   			resultMap="com.yc.shoesMall.dao.OrdersMapper.BaseResultMap">
   			select * from orders where uid=#{id}
   </select> -->
- 
+ 	<select id="selectAddress" resultMap="com.yc.shoesMall.dao.AddressMapper.BaseResultMap">
+ 		select * from address where uid=#{id}
+ 	</select>
  
   <!-- 对用户的模糊查询 名字的模糊查询， 类型的查询 状态的查询 -->
   <select id="queryUserByLike" resultMap="BaseResultMap">

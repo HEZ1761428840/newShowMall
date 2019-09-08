@@ -3,6 +3,7 @@
 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>    
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
  <!-- Start Header Area -->
     <header class="header-area">
         <!-- main header start -->
@@ -25,9 +26,15 @@
                             </div>
                             
                             <ul class="user-info-block">
-                                <li><a href="my-account"><i class="fa fa-user-circle"></i>我的账户</a></li>
-                                <img style="width:50px; height:50px; border-radius:50%; " src="${ loginUser.headPictrue}">
-                                <li><a href="tologin"><i class="fa fa-sign-in"></i> ${loginUser == null?'HI,请登录':'欢迎:'.concat(loginUser.name) }</a></li>
+                               	<c:if test="${loginUser == null}">
+                               		 <li><a href="javascript:dolong()"><i class="fa fa-user-circle"></i>我的账户</a></li>
+                               		<li><a href="tologin"><i class="fa fa-sign-in"></i> ${loginUser == null?'HI,请登录':'欢迎:'.concat(loginUser.name) }</a></li>
+                               	</c:if>
+                               	<c:if test="${loginUser != null}">
+                               	<li><a href="my-account"><i class="fa fa-user-circle"></i>我的账户</a></li>
+                               	<img style="width:50px; height:50px; border-radius:50%; " src="${ loginUser.headPictrue}">
+                               	 <li><i class="fa fa-sign-in"></i> ${loginUser == null?'HI,请登录':'欢迎:'.concat(loginUser.name) }</a></li>
+                               	</c:if>
                                 <li><a href="toregister"><i class="fa fa-sign-in"></i>注册</a></li>
                             </ul>
                         </div>
@@ -87,22 +94,23 @@
                                         <li class="mini-cart-wrap">
                                             <a href="#" class="minicart-btn">
                                                 <i class="fa fa-shopping-cart"></i>
-                                                <span class="notification">${orders==null?0:(fn:length(orders))}</span>
+                                                <span class="notification" id="CartCount">${carts==null?0:(fn:length(carts))}</span>
+                                                
                                             </a>
                                             <div class="cart-list-wrapper">
-                                                <ul class="cart-list">
-                                                <c:forEach items="${orders}" var="o">
-                                                	 <li>
+                                                <ul class="cart-list" id="Cartlist">
+                                                <c:forEach items="${carts}" var="c">
+                                                	 <li id="Cart${c.id}">
                                                         <div class="cart-img">
-                                                            <a href="product-details.html"><img src="img/	" alt=""></a>
+                                                            <a href="product-details.html"><img src="img/${c.productImage}" alt=""></a>
                                                         </div>
                                                         <div class="cart-info">
-                                                            <h6 class="product-name"><a href="product-details.html">7th Generation classic</a></h6>
-                                                            <span class="cart-qty">Qty: 1</span>
-                                                            <span class="item-price">$60.00</span>
+                                                            <h6 class="product-name"><a href="product-details.html">${c.product.name}</a></h6>
+                                                            <span class="cart-qty">数量: ${c.productCount}</span>
+                                                            <span class="item-price">$${c.productCount*c.product.price}</span>
                                                         </div>
                                                         <div class="del-icon">
-                                                            <i class="fa fa-times"></i>
+                                                            <i class="fa fa-times" onclick="delectCart(${c.id})" ></i>
                                                         </div>
                                                     </li>
                                              
@@ -110,27 +118,9 @@
                                                    
                                                    
                                                 </ul>
-                                                <ul class="minicart-pricing-box">
-                                                    <li>
-                                                        <span>Sub-Total</span>
-                                                        <span><strong>$300.00</strong></span>
-                                                    </li>
-                                                    <li>
-                                                        <span>Eco Tax (-2.00)</span>
-                                                        <span><strong>$10.00</strong></span>
-                                                    </li>
-                                                    <li>
-                                                        <span>VAT (20%)</span>
-                                                        <span><strong>$60.00</strong></span>
-                                                    </li>
-                                                    <li class="total">
-                                                        <span>Total</span>
-                                                        <span><strong>$370.00</strong></span>
-                                                    </li>
-                                                </ul>
+                                               
                                                 <div class="minicart-button">
-                                                    <a href="cart"><i class="fa fa-shopping-cart"></i> View Cart</a>
-                                                    <a href="cart"><i class="fa fa-share"></i> Checkout</a>
+                                                    <a href="javascript:showCart()"><i class="fa fa-shopping-cart"></i> 查看购物车 </a>
                                                 </div>
                                             </div>
                                         </li>
@@ -364,5 +354,28 @@
         <!-- offcanvas mobile menu end -->
     </header>
     <!-- end Header Area -->
-    
-   
+<script type="text/javascript">
+function delectCart(cartid){
+	 $.post("delectCart",{id:cartid},function(data){
+		 if(data.code==1){
+			 $('#Cart'+cartid).remove();
+			   $('#CartCount').text(parseInt($('#CartCount').text())-1);
+		 }
+		 
+	 });
+}
+function dolong(){
+	alert("请先登陆");
+}
+function showCart(){
+	if(parseInt($('#CartCount').text())==0){
+		alert("购物车为空");
+	}else{
+		window.location.href ="cart";
+	}
+	
+	
+	
+}
+
+  </script>

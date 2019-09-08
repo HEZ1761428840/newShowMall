@@ -2,6 +2,8 @@ package com.yc.shoesMall.web;
 
 import org.springframework.stereotype.Controller;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.ui.Model;
@@ -11,15 +13,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.yc.shoesMall.bean.Cart;
 import com.yc.shoesMall.bean.User;
 import com.yc.shoesMall.biz.BizException;
-import com.yc.shoesMall.biz.MyorderBiz;
+import com.yc.shoesMall.biz.CartBiz;
 import com.yc.shoesMall.biz.UserBiz;
 import com.yc.shoesMall.result.Result;
 
 
 @Controller
-@SessionAttributes({"loginUser","orders"})
+@SessionAttributes({"loginUser","carts"})
 public class loginAction {
 	
 	/**
@@ -29,7 +32,7 @@ public class loginAction {
 	 * @return
 	 */
 	@Resource
-	private MyorderBiz obiz;
+	private CartBiz cartBiz;
 	
 	@Resource
 	private UserBiz ub;
@@ -55,8 +58,9 @@ public class loginAction {
 	public Result login(String name,String password,Model model) {
 	try{
 		User user = ub.login(name, password);
+		System.out.println(user.getAddress().getAddress()+"======================");
 		model.addAttribute("loginUser",user);//添加到session
-		 model.addAttribute("orders", obiz.queryMyOrder(user.getId()));
+		model.addAttribute("carts", cartBiz.queryMyCart(user.getId()));
 		return new Result(1, "OK",user);
 	}catch(BizException e){
 		return new Result(0,e.getMessage());
