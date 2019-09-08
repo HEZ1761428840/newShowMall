@@ -103,7 +103,7 @@
                                                 地址</a>
                                             <a href="#account-info" data-toggle="tab"><i class="fa fa-user"></i> 
                                                 账户详细资料</a>
-                                            <a href="CheckOut"><i class="fa fa-sign-out"></i> 退出</a>
+                                            <a href="tologin"><i class="fa fa-sign-out"></i> 退出</a>
                                         </div>
                                     </div>
                                     <!-- My Account Tab Menu End -->
