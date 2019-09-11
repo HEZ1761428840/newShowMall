@@ -77,32 +77,23 @@
                                     </div>
                                     <div class="single-input-item">
                                     <label for="loginModalUserPwd">验证码</label>
+                                    	<img  src="imagecode" id="imagecode">
 									  <div class="form-group">
-									   <input class="form-control" type="tel" id="inputCode" placeholder="请输入验证码" maxlength="4">
+									   <input class="form-control" type="tel" id="inputCode" placeholder="请输入验证码" maxlength="5">
 									  </div>
-									 </div>
-									 <div class="single-input-item">
-									 <div id="checkCode" class="code"  onclick="createCode(4)" style="width: 60px;float: left;margin-left: 15px;background-color:white;"></div>
-           							<div onclick="createCode(4)" style="width: 60px;float: left;margin-left: 15px;">换一张</div>
-									
-									 </div>
-									 
-                                          <a href="#" class="forget-pwd" style="margin-left:100px">忘记密码?</a>
-                                       
-                                    </div>
-                                    <div class="single-input-item">
+									  
+									   <div class="single-input-item">
                                         <button  onclick="login()" class="btn btn-sqr">登录</button>
+                                        <a href="#" class="forget-pwd" style="margin-left:100px">忘记密码?</a>
                                     </div>
+									</div>
+                                </div>
+                                   </div>
                             </div>
                         </div>
-                        <!-- Login Content End -->
-
                     </div>
                 </div>
-            </div>
-        </div>
-        <!-- login register wrapper end -->
-    </main>
+          <jsp:include page="common/js.jsp"></jsp:include> 
     
 <script type="text/javascript">
     
@@ -114,6 +105,7 @@
 		var url = "login";
 		var name = loginModalUserNmae.value;
 		var pwd = loginModalUserPwd.value;
+		var inputCode = $('#inputCode').val();
 		if(name==''){
 			toastr.options = {
 		              "positionClass": "toast-top-center",//弹出窗的位置
@@ -130,82 +122,34 @@
 		
 		var param = {
 			name : name,
-			password : pwd
+			password : pwd,
+			inputCode : inputCode
 		};
-		//匿名函数
-		if(validateCode()==false){
-			 return;
-		 }	
+		
 		$.post(url, param, function(result) {
 			console.log(result);
 			if (result.code == 1) {
-				alert("登录成功");
 				window.location.href="index";
-			} else {
-				createCode(4);
+			}else if(result.code==4){
+				toastr.options = {
+			              "positionClass": "toast-top-center",//弹出窗的位置
+			          };
+				toastr.warning('验证码错误');
+				var timestamp = (new Date()).valueOf();
+		        $(this).attr("src","imagecode?timestamp=" + timestamp);
+			}else {
 				alert("账号或者密码错误，请重新登录");
 			}
 		}); 
 		
 	}
-	
-	window.onload=function(){
-	     createCode(4);    
-	    }
+	$("#imagecode").on("click",function () {
 
-	//生成验证码的方法
-   function createCode(length) {
-       var code = "";
-       var codeLength = parseInt(length); //验证码的长度
-       var checkCode = document.getElementById("checkCode");
-       ////所有候选组成验证码的字符，当然也可以用中文的
-       var codeChars = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
-       'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
-       'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'); 
-       //循环组成验证码的字符串
-       for (var i = 0; i < codeLength; i++)
-       {
-           //获取随机验证码下标
-           var charNum = Math.floor(Math.random() * 62);
-           //组合成指定字符验证码
-           code += codeChars[charNum];
-       }
-       if (checkCode)
-       {
-           //为验证码区域添加样式名
-           checkCode.className = "code";
-           //将生成验证码赋值到显示区
-           checkCode.innerHTML = code;
-       }
-   }
- //检查验证码是否正确
-   function validateCode()
-   {
-       //获取显示区生成的验证码
-       var checkCode = document.getElementById("checkCode").innerHTML;
-       //获取输入的验证码
-       var inputCode = document.getElementById("inputCode").value;
-       console.log(checkCode);
-       console.log(inputCode);
-       if (inputCode.length <= 0)
-       {
-       	toastr.options = {
-		              "positionClass": "toast-top-center",//弹出窗的位置
-		          };
-			toastr.warning('请输入验证码');
-			return false;
-       }
-       else if (inputCode.toUpperCase() != checkCode.toUpperCase())
-       {
-       	toastr.options = {
-		              "positionClass": "toast-top-center",//弹出窗的位置
-		          };
-			toastr.warning('验证码有误');
-			$('#inputCode').val("");
-           createCode(4);
-           return false;
-       }    
-   }  
+        var timestamp = (new Date()).valueOf();
+
+        $(this).attr("src","imagecode?timestamp=" + timestamp);
+
+    });
 </script>
 
     <!-- Scroll to top start -->

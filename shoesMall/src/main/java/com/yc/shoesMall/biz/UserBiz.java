@@ -32,6 +32,11 @@ public class UserBiz {
 			}
 			return list.get(0);
 		}
+		
+		
+		public int updatePassword(User record) {
+		return	um.updateByPrimaryKeySelective(record);
+		}
 
 		/**
 		 * 
@@ -51,7 +56,6 @@ public class UserBiz {
 		 * @return
 		 */
 		public int update(User user){
-			UserExample example=new UserExample();
 			return um.updateByPrimaryKeySelective(user);
 			
 		}

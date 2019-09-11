@@ -1,15 +1,11 @@
 package com.yc.shoesMall.biz;
 
-import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.yc.shoesMall.bean.Cart;
 import com.yc.shoesMall.bean.CartExample;
 import com.yc.shoesMall.bean.OrderDetail;
@@ -20,7 +16,6 @@ import com.yc.shoesMall.bean.User;
 import com.yc.shoesMall.dao.CartMapper;
 import com.yc.shoesMall.dao.OrderDetailMapper;
 import com.yc.shoesMall.dao.OrdersMapper;
-import com.yc.shoesMall.utill.OrderUtill;
 
 @Service
 public class OrdersBiz {
@@ -41,7 +36,7 @@ public class OrdersBiz {
 		orders.setUid(user.getId());
 		orders.setCreateTime(new Date());
 		orders.setStatus("1");
-		
+		orders.setPayMethod("1");
 		for (Cart cart : list) {
 			countPrice += cart.getProduct().getPrice()*cart.getProductCount();
 		}
@@ -79,10 +74,16 @@ public class OrdersBiz {
 		return ordersMapper.selectByExample(example);
 	}
 	
-	public List<Orders> selectOrders(String Orderid) {
+	public List<Orders> selectOrders(String OrderNum) {
 		OrdersExample example = new OrdersExample();
-		example.createCriteria().andOrderNumEqualTo(Orderid);
+		example.createCriteria().andOrderNumEqualTo(OrderNum);
 		return ordersMapper.selectByExample(example);
+	}
+	
+	public List<Orders> selectOrders(int Orderid) {
+		 List<Orders> list = new ArrayList<Orders>();
+		list.add(ordersMapper.selectByPrimaryKey(Orderid));
+		return  list;
 	}
 	
 }

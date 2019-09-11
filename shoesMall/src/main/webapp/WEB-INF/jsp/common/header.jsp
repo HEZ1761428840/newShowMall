@@ -71,9 +71,7 @@
                                                
                                             </li>
                                          
-                                            <li><a href="blog">博客 </a>
                                                 
-                                            </li>
                                             <li><a href="contact-us">关于我们</a></li>
                                         </ul>
                                     </nav>

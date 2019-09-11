@@ -12,17 +12,21 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.yc.shoesMall.bean.Address;
 import com.yc.shoesMall.bean.OrdersExample;
 import com.yc.shoesMall.bean.User;
 import com.yc.shoesMall.biz.AddressBiz;
+import com.yc.shoesMall.biz.BizException;
 import com.yc.shoesMall.biz.CartBiz;
 import com.yc.shoesMall.biz.OrdersBiz;
 import com.yc.shoesMall.biz.UserBiz;
+import com.yc.shoesMall.result.Result;
 
 
 @Controller
@@ -55,7 +59,7 @@ public class myAccountAction {
 		
 			List<User> list=ubiz.queryId(user);
 	        model.addAttribute("orderLists", ordersBiz.selectOrders(user));
-	        model.addAttribute("account_details", cartBiz.queryAddress(list.get(0).getId()));	
+	        model.addAttribute("Address", cartBiz.queryAddress(list.get(0).getId()));	
 		
        
 		return "my-account";
@@ -66,50 +70,34 @@ public class myAccountAction {
 	 * @param user
 	 * @param model
 	 * @return
+	 * @throws BizException 
 	 */
 	@RequestMapping("account")
 	public String myaccount1(@SessionAttribute("loginUser") User user,
-			Model model,
-			HttpServletRequest request) {
+			Model model,SessionStatus sessionStatus,
+			HttpServletRequest request) throws BizException {
 		
-		String name=request.getParameter("display-name");
+		String name=request.getParameter("name");
 		String email=request.getParameter("email");
-		String password=request.getParameter("new-pwd");
 		String phone=request.getParameter("phone");
 		String address=request.getParameter("address");
-		
 		if(!"".equals(name)){
 			user.setName(name);
 		}
 		if(!"".equals(email)){
 			user.setEmail(email);
 		}
-		if(!"".equals(password)){
-			user.setPassword(password);
-		}
 		if(!"".equals(phone)){
 			user.setPhone(phone);
 		}
 		
-		//修改地址
-		if(!"".equals(address)){
-			List<User> list =ubiz.queryId(user);
-              Address a= abiz.queryAddress(list.get(0).getId());
-			  a.setAddress(address);
-			abiz.update(a);
-			
-		}
-		
-		
+		ubiz.update(user);
+		User user2 = ubiz.login(user.getName(), user.getPassword());
+		sessionStatus.setComplete();
+		model.addAttribute("loginUser", user2);
 		ubiz.update(user);
 		
-		if("".equals(password) || "".equals(name) || ("".equals(password)&& "".equals(name))){
-			return myaccount(user, model);
-		}else {
-			return "login";
-		}
-		
-	
+		return myaccount(user, model);
 	}
 	
 	
@@ -120,16 +108,36 @@ public class myAccountAction {
 	 * @return
 	 */
 	@RequestMapping("CheckOut")
-	
-	public String CheckOut(@SessionAttribute("loginUser") User user,Model model) { 
+	public String CheckOut(@SessionAttribute("loginUser") User user,Model model,SessionStatus sessionStatus) { 
 	   user=null;
+	   sessionStatus.setComplete();
        model.addAttribute("loginUser", user);		
 		return "index";
-		
-	
 	}
 	
 	
+	
+	@RequestMapping("delectAddress")
+	@ResponseBody
+	public Result delectAddress(int id) { 
+		
+		return new Result(abiz.delect(id),"");
+	}
+	
+	@RequestMapping("addAddress")
+	@ResponseBody
+	public Result addAddress(@SessionAttribute("loginUser") User user,Address address) { 
+		address.setUid(user.getId());
+		address.setStatus(1);
+		return new Result(abiz.add(address),"");
+	}
+	
+	
+	@RequestMapping("updateAddress")
+	@ResponseBody
+	public Result updateAddress(Address address) {
+		return new Result(abiz.update(address), "");
+	}
 	
 	
 	
