@@ -110,6 +110,7 @@
 								</div>
 								<!-- My Account Tab Menu End -->
 
+<<<<<<< HEAD
 								<!-- My Account Tab Content Start -->
 								<div class="col-lg-9 col-md-8">
 									<div class="tab-content" id="myaccountContent">
@@ -126,6 +127,36 @@
 											</div>
 										</div>
 										<!-- Single Tab Content End -->
+=======
+        <!-- my account wrapper start -->
+        <div class="my-account-wrapper section-padding">
+            <div class="container">
+                <div class="section-bg-color">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <!-- My Account Page Start -->
+                            <div class="myaccount-page-wrapper">
+                                <!-- My Account Tab Menu Start -->
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4">
+                                        <div class="myaccount-tab-menu nav" role="tablist">
+                                            <a href="#dashboad" class="active" data-toggle="tab"><i class="fa fa-dashboard"></i>
+                                                仪表板</a>
+                                            <a href="#orders" data-toggle="tab"><i class="fa fa-cart-arrow-down"></i>
+                                                订单</a>
+                                           
+                                            <a href="#payment-method" data-toggle="tab"><i class="fa fa-credit-card"></i>
+                                                支付方式
+                                                </a>
+                                            <a href="#address-edit" data-toggle="tab"><i class="fa fa-map-marker"></i>
+                                                地址</a>
+                                            <a href="#account-info" data-toggle="tab"><i class="fa fa-user"></i> 
+                                                账户详细资料</a>
+                                            <a href="tologin"><i class="fa fa-sign-out"></i> 退出</a>
+                                        </div>
+                                    </div>
+                                    <!-- My Account Tab Menu End -->
+>>>>>>> branch 'master' of https://github.com/HEZ1761428840/newShowMall.git
 
 										<!-- Single Tab Content Start -->
 										<div class="tab-pane fade" id="orders" role="tabpanel">

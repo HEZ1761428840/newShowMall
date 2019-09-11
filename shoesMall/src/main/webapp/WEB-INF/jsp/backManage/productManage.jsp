@@ -209,7 +209,7 @@
  		   
  		    if(obj.event === 'detail'){
  		    	//跳转到前台的商品查询
- 		    	window.location.href="product-details-variable.html";
+ 		    	window.location.href="localhost:8080/toDetails?id=692";
  		    } else if(obj.event === 'edit'){
  		    	layer.open({
 	        		//layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
